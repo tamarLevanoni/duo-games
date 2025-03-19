@@ -1,11 +1,9 @@
 import React from 'react';
+import useManagerStore from '@/app/stores/managerStore';
+
 
 const BorrowingManagement = () => {
-  const fakeData = [
-    { id: 1, name: 'Game 1', status: 'Available' },
-    { id: 2, name: 'Game 2', status: 'Borrowed' },
-    { id: 3, name: 'Game 3', status: 'Damaged' },
-  ];
+  const borrowings = useManagerStore((state) => state.borrowings);
 
   return (
     <div className="w-full mb-4">
@@ -13,19 +11,17 @@ const BorrowingManagement = () => {
       <table className="min-w-full bg-white">
         <thead>
           <tr>
-            <th className="py-2">Game</th>
-            <th className="py-2">Status</th>
-            <th className="py-2">Actions</th>
+            <th className="py-2">שם הלוקח</th>
+            <th className="py-2">שם המשחק</th>
+            <th className="py-2">סטטוס</th>
           </tr>
         </thead>
         <tbody>
-          {fakeData.map((item) => (
+          {borrowings.map((item) => (
             <tr key={item.id}>
-              <td className="py-2">{item.name}</td>
+              <td className="py-2">{item.borrow.name}</td>
+              <td className="py-2">{item.gl.game.name}</td>
               <td className="py-2">{item.status}</td>
-              <td className="py-2">
-                <button className="bg-blue-500 text-white px-2 py-1 rounded">Change Status</button>
-              </td>
             </tr>
           ))}
         </tbody>

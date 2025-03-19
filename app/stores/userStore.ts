@@ -8,16 +8,16 @@ export interface UserStore {
   managerData: any | null;
   login: (email: string) => Promise<boolean>;
   logout: () => void;
-  fetchManagerData: (id: string) => Promise<void>;
+  restoreUser: () => void;
 }
 
-const useUserStore = create<UserStore>((set) => ({
+const useUserStore = create<UserStore>((set,get) => ({
   isLoggedIn: false,
   user: null,
   token: null,
   managerData: null,
   login: async (email) => {
-    try {
+    try {     
       const response = await fetch(`/api/users/${email}`);
       const userData: User = await response.json();
       localStorage.setItem('email', email);
@@ -32,15 +32,13 @@ const useUserStore = create<UserStore>((set) => ({
     localStorage.removeItem('email');
     set({ isLoggedIn: false, user: null, token: null });
   },
-  fetchManagerData: async (id) => {
-    try {
-      const response = await fetch(`/api/manager/${id}`);
-      const data = await response.json();
-      set({ managerData: data });
-    } catch (error) {
-      console.error('Failed to fetch manager data:', error);
+ 
+  restoreUser: () => {
+    const email = localStorage.getItem('email');
+    if (email) {
+      get().login(email);
     }
-  },
+  }
 }));
 
 export default useUserStore;

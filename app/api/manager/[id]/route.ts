@@ -1,41 +1,54 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
+import { NextApiRequest, NextApiResponse } from "next";
+import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { GL_DETAILS, USER_CONTACT_FIELDS } from "@/app/stores/types";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextApiRequest, { params }: { params: { id: string } }) {
-  const id = params.id;
+export async function GET(
+  req: NextApiRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const id = (await params).id;
 
   try {
-    const manager = await prisma.user.findUnique({
+    const location = await prisma.location.findUnique({
       where: {
-        id: id as string, // type casting the id to string
+        managerId: id as string, // type casting the id to string
       },
       include: {
-        LocationManager: {
-          include: {
-            gls: {
+        gls: {
+          select: {
+            id: true,
+            status: true,
+            game: {
               include: {
-                game: true,
-                location: true,
+                gls: false,
               },
-            }
+            },
+          },
+        },
+        leader: USER_CONTACT_FIELDS,
+        borrowings: {
+          include: {
+            borrow: USER_CONTACT_FIELDS,
+            gl: GL_DETAILS,
           },
         },
       },
     });
 
-    if (!manager) {
+    if (!location) {
       return new NextResponse(
-        JSON.stringify({ message: "Manager not found" }),
+        JSON.stringify({ message: "location not found" }),
         { status: 404 }
       );
     }
-    console.log('Manager Data API:', manager);
+    console.log("location Data API:", location);
 
-    return new NextResponse(JSON.stringify(manager), { status: 200 });
-
+    return NextResponse.json(location, {
+      status: 200,
+    });
   } catch (error) {
     console.log(error);
     return new NextResponse(

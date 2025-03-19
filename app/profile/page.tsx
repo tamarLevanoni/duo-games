@@ -8,16 +8,9 @@ const ProfilePage = () => {
   const router = useRouter();
   const user=useUserStore((state)=>state.user);
   const isLoggedIn=useUserStore((state)=>state.isLoggedIn);
+  const login=useUserStore((state)=>state.login);
   const logout=useUserStore((state)=>state.logout);
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      console.log('User is not logged in');
-      
-      router.push('/login');
-    }
-  }
-  , [isLoggedIn, router]);
   // const { user, isLoggedIn, logout } = useUserStore((state) => ({
   //   user: state.user,
   //   isLoggedIn: state.isLoggedIn,

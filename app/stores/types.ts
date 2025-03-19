@@ -1,82 +1,45 @@
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  isAdmin: boolean;
-  isLeader: boolean;
-  isManager: boolean;
-  borrowings: Borrowing[];
-}
-export interface Borrowing {
-  id: string;
-  borrowId: string;
-  borrow: User;
-  glId: string;
-  gl: GL;
-  locationId: string;
-  location: Location;
-  rentalDate: Date | null;
-  expectedReturnDate: Date | null;
-  returnDate: Date | null;
-  status: BorrowingStatus;
-  createdAt: Date;
-}
-export interface GL {
-  id: string;
-  gameId: string;
-  game: Game;
-  locationId: string;
-  location: Location;
-  status: GameStatus;
-  borrowings: Borrowing[];
-}
-export interface Game {
-  id: string;
-  name: string;
-  category: GameCategory;
-  desc: string;
-  img: string;
-  gls: GL[];
-}
-export interface Location {
-  id: string;
-  name: string;
-  leaderId: string;
-  leader: User;
-  managerId: string;
-  manager: User;
-  gls: GL[];
-  borrowings: Borrowing[];
-}
+import { BorrowingStatus, GameStatus } from "@prisma/client";
 
-export enum GameStatus {
-  Available,
-  Borrowed,
-  Damaged,
-}
-
-export enum BorrowingStatus {
-  Requested,
-  Borrowed,
-  Late,
-  Returned,
-}
-
-export enum GameCategory {
-  Singles,
-  Marriage,
-  General,
-}
-
+// הקובץ מכיל את כל הטיפוסים הנדרשים לאפליקציה  
 export interface UserContactInfo {
   name: string; // שם המשתמש
   email: string; // כתובת אימייל
   phone: string; // מספר טלפון
 }
 
+export const USER_CONTACT_FIELDS = {
+  select: {
+    name: true,
+    email: true,
+    phone: true,
+  },
+};
+
+// GetLocationInfoRes: תגובה לבקשת מידע על מוקד
+export interface LocationInfo {
+  name: string; // שם המוקד
+  manager: UserContactInfo; // פרטי רכז המוקד
+  gls: GLForLocation[]; // רשימת המשחקים במוקד
+}
+
+export interface GameDetails {
+  name: string; // שם המשחק
+  category: string; // קטגוריית המשחק
+  desc: string; // תיאור המשחק
+  img: string; // קישור לתמונה של המשחק
+}
+// export const GAME_DETAILS = { include: { gls: false } };
+export const GL_DETAILS = {
+  include: {
+    game: { include: { gls: false } },
+  },
+};
+
+
+
 // User: מייצג משתמש במערכת
 export interface UserFull {
+  id: string; // מזהה המשתמש
   name: string; // שם המשתמש
   email: string; // כתובת אימייל
   phone: string; // מספר טלפון
@@ -87,22 +50,69 @@ export interface UserFull {
 }
 
 export interface BorrowingForBorrow {
+  id: string; // מזהה ההשאלה
   gl: GLForBorrow; // פרטי המשחק שהושאל
+  location: {
+    name: string; // שם המוקד
+    manager: UserContactInfo; // פרטי רכז המוקד
+  }; // פרטי המוקד
   rental_date: Date | null; // תאריך ההשאלה
   expected_return_date: Date | null; // תאריך החזרה צפוי
   return_date: Date | null; // תאריך החזרה בפועל
   status: BorrowingStatus; // סטטוס ההשאלה ('התבקש', 'מושאל', 'איחור', 'הוחזר')
 }
 
+// GetGLForBorrowRes: מידע על משחק שהושאל
+export interface GLForBorrow {
+  id: string; // מזהה המשחק במוקד
+  game: GameDetails; // פרטי המשחק
+  // location: {
+  //   name: string; // שם המוקד
+  //   manager: UserContactInfo; // פרטי רכז המוקד
+  // }; // פרטי המוקד
+  // location:LocationForGL
+  status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
+}
+
+
+
+
+
+// // GetLocationContactInfoRes: מידע על מוקד לצורך יצירת קשר
+// export interface LocationForGL {
+//   name: string; // שם המוקד
+//   manager: UserContactInfo; // פרטי רכז המוקד
+// }
+
+// GetLocationForManagerRes: תגובה לבקשת מידע על מוקד למנהל
+export interface LocationForManager {
+  id: string; // מזהה המוקד 
+  name: string; // שם המוקד
+  leader: UserContactInfo; // פרטי רכז העל של המוקד
+  gls: GLForLocation[]; // רשימת המשחקים במוקד
+  borrowings: BorrowingForLocation[]; // רשימת ההשאלות שבוצעו במוקד
+}
+
 // GetBorrowingForLocationRes: פרטי השאלה במוקד מסוים
 export interface BorrowingForLocation {
-  user: UserContactInfo; // פרטי המשתמש שהשאיל
+  id: string; // מזהה ההשאלה 
+  borrow: UserContactInfo; // פרטי המשתמש שהשאיל
   gl: GLForLocation; // פרטי המשחק במוקד
   rental_date: Date | null; // תאריך ההשאלה
   expected_return_date: Date | null; // תאריך החזרה צפוי
   return_date: Date | null; // תאריך החזרה בפועל
   status: BorrowingStatus; // סטטוס ההשאלה
 }
+
+// GetGLForLocationRes: מידע על משחק בתוך מוקד
+export interface GLForLocation {
+  id: string; // מזהה המשחק במוקד 
+  game: GameDetails; // פרטי המשחק
+  status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
+}
+
+
+
 
 // CreateBorrowingReq: בקשה ליצירת השאלה
 export interface CreateBorrowingReq {
@@ -111,6 +121,7 @@ export interface CreateBorrowingReq {
 }
 // ApproveBorrowRequest: בקשה לאישור השאלה
 export interface ApproveBorrowRequest {
+  id: string; // מזהה הבקשה
   gl: string; // מזהה המשחק
   rental_date: Date; // תאריך ההשאלה
   expected_return_date: Date; // תאריך החזרה צפוי
@@ -120,43 +131,7 @@ export interface ApproveBorrowRequest {
 export interface ReturnBorrowingReq {
   return_date: Date; // תאריך החזרה בפועל
 }
-export interface GameForGL {
-  name: string; // שם המשחק
-  category: string; // קטגוריית המשחק
-  desc: string; // תיאור המשחק
-  img: string; // קישור לתמונה של המשחק
-}
 
-// GetGLForLocationRes: מידע על משחק בתוך מוקד
-export interface GLForLocation {
-  game: GameForGL; // פרטי המשחק
-  status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
-}
 
-// GetGLForBorrowRes: מידע על משחק שהושאל
-export interface GLForBorrow {
-  game: GameForGL; // פרטי המשחק
-  location: LocationForGL; // פרטי המוקד
-  status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
-}
 
-// GetLocationInfoRes: תגובה לבקשת מידע על מוקד
-export interface LocationInfo {
-  name: string; // שם המוקד
-  manager: UserContactInfo; // פרטי רכז המוקד
-  gls: GLForLocation[]; // רשימת המשחקים במוקד
-}
 
-// GetLocationForManagerRes: תגובה לבקשת מידע על מוקד למנהל
-export interface LocationForManager {
-  name: string; // שם המוקד
-  leader: UserContactInfo; // פרטי רכז העל של המוקד
-  gls: GLForLocation[]; // רשימת המשחקים במוקד
-  borrowings: BorrowingForLocation[]; // רשימת ההשאלות שבוצעו במוקד
-}
-
-// GetLocationContactInfoRes: מידע על מוקד לצורך יצירת קשר
-export interface LocationForGL {
-  name: string; // שם המוקד
-  manager: UserContactInfo; // פרטי רכז המוקד
-}

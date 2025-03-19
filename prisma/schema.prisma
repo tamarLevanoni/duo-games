@@ -43,7 +43,7 @@ model User {
   borrowings Borrowing[]
 
   LocationLeader  Location[] @relation("Leader")
-  LocationManager Location[] @relation("Manager")
+  LocationManager Location? @relation("Manager")
 }
 
 model Borrowing {
@@ -85,7 +85,7 @@ model Location {
   name       String
   leaderId   String
   leader     User        @relation("Leader", fields: [leaderId], references: [id])
-  managerId  String
+  managerId  String      @unique
   manager    User        @relation("Manager", fields: [managerId], references: [id])
   gls        GL[]
   borrowings Borrowing[]

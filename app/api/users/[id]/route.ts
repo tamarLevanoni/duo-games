@@ -2,6 +2,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from "next/server";
+import { GL_DETAILS, USER_CONTACT_FIELDS } from '@/app/stores/types';
 
 
 const prisma = new PrismaClient();
@@ -18,14 +19,11 @@ export async function GET(req: NextApiRequest,  { params }: { params: Promise<{ 
       include: {
         borrowings: {
           include: {
-            gl: {
-              include: {
-                game: true,
-                location: {
-                  include: {
-                    manager: true,
-                  },
-                },
+            gl: GL_DETAILS,
+            location: {
+              select: {
+                name: true,
+                manager: USER_CONTACT_FIELDS,
               },
             },
           },
