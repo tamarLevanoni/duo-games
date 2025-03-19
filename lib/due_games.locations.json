@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "67c9989e33b6f517ac0dd653"
+  },
+  "name": "מרכז תל אביב",
+  "leader": {
+    "$oid": "67c997a433b6f517ac0dd64b"
+  },
+  "manager": {
+    "$oid": "67c997a433b6f517ac0dd64c"
+  },
+  "gls": [
+    {
+      "$oid": "67c9994a33b6f517ac0dd657"
+    },
+    {
+      "$oid": "67c9994a33b6f517ac0dd659"
+    }
+  ],
+  "borrowings": [
+    {
+      "$oid": "67c999f433b6f517ac0dd65e"
+    },
+    {
+      "$oid": "67c999f433b6f517ac0dd660"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67c9989e33b6f517ac0dd654"
+  },
+  "name": "מרכז ירושלים",
+  "leader": {
+    "$oid": "67c997a433b6f517ac0dd64b"
+  },
+  "manager": {
+    "$oid": "67c997a433b6f517ac0dd64c"
+  },
+  "gls": [
+    {
+      "$oid": "67c9994a33b6f517ac0dd658"
+    },
+    {
+      "$oid": "67c9994a33b6f517ac0dd65a"
+    }
+  ],
+  "borrowings": [
+    {
+      "$oid": "67c999f433b6f517ac0dd65f"
+    },
+    {
+      "$oid": "67c999f433b6f517ac0dd661"
+    }
+  ]
+}]

@@ -1,0 +1,61 @@
+{
+  "games": [
+    {
+      "id": "b469ac1d-aef0-460c-8114-d0468df2d6f3",
+      "name": "לינק",
+      "category": "General",
+      "desc": "תיאור",
+      "img": ""
+    }
+  ],
+  "locations": [
+    {
+      "id": "919f4d4c-e000-4158-9936-0ad79b51d5a4",
+      "name": "בית אל",
+      "leaderId": "2685391e-0656-4c4e-bb0e-7b8edacc7bb8",
+      "managerId": "ed6ef147-b1a8-404a-8147-b46d3aa88cb6"
+    }
+  ],
+  "users": [
+    {
+      "id": "c56d7096-fa75-429c-bc7f-3c22db145718",
+      "name": "אורית כהן",
+      "email": "orit.cohen@example.com",
+      "phone": "0538311420",
+      "isAdmin": true,
+      "isLeader": false,
+      "isManager": false
+    },
+    {
+      "id": "2685391e-0656-4c4e-bb0e-7b8edacc7bb8",
+      "name": "דוד לוי",
+      "email": "david.levi@example.com",
+      "phone": "0552650099",
+      "isAdmin": false,
+      "isLeader": true,
+      "isManager": false
+    },
+    {
+      "id": "ed6ef147-b1a8-404a-8147-b46d3aa88cb6",
+      "name": "שרה מזרחי",
+      "email": "sara.m@example.com",
+      "phone": "0526071637",
+      "isAdmin": false,
+      "isLeader": false,
+      "isManager": true
+    }
+  ],
+  "borrowings": [
+    {
+      "id": "eead83b8-04d8-4cb6-b9a1-71b20285973f",
+      "borrowId": "c56d7096-fa75-429c-bc7f-3c22db145718",
+      "glId": "a5d69ebb-0d2d-44a7-afd7-b64d0e1ae3f3",
+      "locationId": "919f4d4c-e000-4158-9936-0ad79b51d5a4",
+      "rentalDate": null,
+      "expectedReturnDate": null,
+      "returnDate": null,
+      "status": "Requested",
+      "createdAt": "2025-03-18T19:46:03.296Z"
+    }
+  ]
+}

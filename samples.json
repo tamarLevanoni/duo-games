@@ -1,0 +1,35 @@
+{
+    "users": [
+      {"id": 1, "name": "Alice", "email": "alice@example.com", "phone": "123-456-7890", "isAdmin": true, "isLeader": false, "isManager": false, "borrowings_ids": [1, 2]},
+      {"id": 2, "name": "Bob", "email": "bob@example.com", "phone": "234-567-8901", "isAdmin": false, "isLeader": true, "isManager": false, "borrowings_ids": [3]},
+      {"id": 3, "name": "Charlie", "email": "charlie@example.com", "phone": "345-678-9012", "isAdmin": false, "isLeader": false, "isManager": true, "borrowings_ids": [4, 5]},
+      {"id": 4, "name": "David", "email": "david@example.com", "phone": "456-789-0123", "isAdmin": false, "isLeader": false, "isManager": false, "borrowings_ids": []},
+      {"id": 5, "name": "Eve", "email": "eve@example.com", "phone": "567-890-1234", "isAdmin": false, "isLeader": false, "isManager": false, "borrowings_ids": []}
+    ],
+    "locations": [
+      {"id": 1, "name": "Downtown Center", "leader_id": 2, "manager_id": 3, "gls": [1, 2, 3], "borrowings_id": [1, 2, 3]},
+      {"id": 2, "name": "Uptown Center", "leader_id": 2, "manager_id": 3, "gls": [4, 5], "borrowings_id": [4, 5]}
+    ],
+    "games": [
+      {"id": 1, "name": "Chess", "category": "Strategy", "desc": "A classic board game.", "img": "chess.jpg"},
+      {"id": 2, "name": "Monopoly", "category": "Family", "desc": "Real estate trading game.", "img": "monopoly.jpg"},
+      {"id": 3, "name": "Scrabble", "category": "Word", "desc": "Word-building game.", "img": "scrabble.jpg"},
+      {"id": 4, "name": "Risk", "category": "Strategy", "desc": "Conquer the world.", "img": "risk.jpg"},
+      {"id": 5, "name": "Uno", "category": "Card", "desc": "Fast-paced card game.", "img": "uno.jpg"}
+    ],
+    "gls": [
+      {"id": 1, "game_id": 1, "location_id": 1, "status": "Available"},
+      {"id": 2, "game_id": 2, "location_id": 1, "status": "Borrowed"},
+      {"id": 3, "game_id": 3, "location_id": 1, "status": "Damaged"},
+      {"id": 4, "game_id": 4, "location_id": 2, "status": "Available"},
+      {"id": 5, "game_id": 5, "location_id": 2, "status": "Borrowed"}
+    ],
+    "borrowings": [
+      {"id": 1, "borrow_id": 1, "gl_id": 1, "rental_date": "2025-02-01", "expected_return_date": "2025-03-10", "return_date": null, "status": "Borrowed", "created_at": "2025-02-01"},
+      {"id": 2, "borrow_id": 1, "gl_id": 2, "rental_date": "2025-02-05", "expected_return_date": "2025-02-12", "return_date": "2025-02-11", "status": "Returned", "created_at": "2025-02-05"},
+      {"id": 3, "borrow_id": 2, "gl_id": 3, "rental_date": null, "expected_return_date": null, "return_date": null, "status": "Requested", "created_at": "2025-02-06"},
+      {"id": 4, "borrow_id": 3, "gl_id": 4, "rental_date": "2025-02-02", "expected_return_date": "2025-02-09", "return_date": null, "status": "Delayed", "created_at": "2025-02-02"},
+      {"id": 5, "borrow_id": 3, "gl_id": 5, "rental_date": "2025-02-08", "expected_return_date": "2025-03-15", "return_date": null, "status": "Borrowed", "created_at": "2025-02-08"}
+    ]
+  }
+  

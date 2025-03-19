@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GameStatus {
+  Available
+  Borrowed
+  Damaged
+}
+
+enum BorrowingStatus {
+  Requested
+  Borrowed
+  Late
+  Returned
+}
+
+enum GameCategory {
+  Singles
+  Marriage
+  General
+}
+
+model User {
+  id         String      @id @default(uuid())
+  name       String
+  email      String      @unique
+  phone      String
+  isAdmin    Boolean
+  isLeader   Boolean
+  isManager  Boolean
+  borrowings Borrowing[]
+
+  LocationLeader  Location[] @relation("Leader")
+  LocationManager Location[] @relation("Manager")
+}
+
+model Borrowing {
+  id                 String          @id @default(uuid())
+  borrowId           String
+  borrow             User            @relation(fields: [borrowId], references: [id])
+  glId               String
+  gl                 GL              @relation(fields: [glId], references: [id])
+  locationId         String
+  location           Location        @relation(fields: [locationId], references: [id])
+  rentalDate         DateTime?
+  expectedReturnDate DateTime?
+  returnDate         DateTime?
+  status             BorrowingStatus
+  createdAt          DateTime        @default(now())
+}
+
+model Game {
+  id       String @id @default(uuid())
+  name     String
+  category GameCategory
+  desc     String
+  img      String
+  gls      GL[]
+}
+
+model GL {
+  id         String      @id @default(uuid())
+  gameId     String
+  game       Game        @relation(fields: [gameId], references: [id])
+  locationId String
+  location   Location    @relation(fields: [locationId], references: [id])
+  status     GameStatus
+  borrowings Borrowing[]
+}
+
+model Location {
+  id         String      @id @default(uuid())
+  name       String
+  leaderId   String
+  leader     User        @relation("Leader", fields: [leaderId], references: [id])
+  managerId  String
+  manager    User        @relation("Manager", fields: [managerId], references: [id])
+  gls        GL[]
+  borrowings Borrowing[]
+}

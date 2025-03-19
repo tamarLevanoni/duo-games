@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd657"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd64f"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd653"
+  },
+  "status": 1
+},
+{
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd658"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd64f"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd654"
+  },
+  "status": 2
+},
+{
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd659"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd650"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd653"
+  },
+  "status": 1
+},
+{
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd65a"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd650"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd654"
+  },
+  "status": 3
+}]

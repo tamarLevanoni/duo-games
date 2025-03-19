@@ -1,0 +1,263 @@
+{
+  "users":[
+    {
+  "_id": {
+    "$oid": "67c997a433b6f517ac0dd64a"
+  },
+  "name": "אורית כהן",
+  "email": "orit.cohen@example.com",
+  "phone": "123-456-7890",
+  "isAdmin": true,
+  "isLeader": false,
+  "isManager": false,
+  "borrowings": [
+    {
+      "$oid": "67c999f433b6f517ac0dd660"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67c997a433b6f517ac0dd64b"
+  },
+  "name": "דוד לוי",
+  "email": "david.levi@example.com",
+  "phone": "234-567-8901",
+  "isAdmin": false,
+  "isLeader": true,
+  "isManager": false,
+  "borrowings": [
+    {
+      "$oid": "67c999f433b6f517ac0dd65f"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67c997a433b6f517ac0dd64c"
+  },
+  "name": "שרה מזרחי",
+  "email": "sara.m@example.com",
+  "phone": "345-678-9012",
+  "isAdmin": false,
+  "isLeader": false,
+  "isManager": true,
+  "borrowings": [
+    {
+      "$oid": "67c999f433b6f517ac0dd65e"
+    },
+    {
+      "$oid": "67c999f433b6f517ac0dd661"
+    }
+  ]
+}],
+"borrowings":[
+  {
+    "_id": {
+      "$oid": "67c999f433b6f517ac0dd65e"
+    },
+    "borrow": {
+      "$oid": "67c997a433b6f517ac0dd64c"
+    },
+    "gl": {
+      "$oid": "67c9994a33b6f517ac0dd657"
+    },
+    "rental_date": "2025-03-01T00:00:00Z",
+    "expected_return_date": "2025-03-10T00:00:00Z",
+    "return_date": null,
+    "status": "Borrowed",
+    "created_at": "2025-03-01T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "67c999f433b6f517ac0dd65f"
+    },
+    "borrow": {
+      "$oid": "67c997a433b6f517ac0dd64b"
+    },
+    "gl": {
+      "$oid": "67c9994a33b6f517ac0dd658"
+    },
+    "rental_date": "2025-03-05T00:00:00Z",
+    "expected_return_date": "2025-03-12T00:00:00Z",
+    "return_date": "2025-03-11T00:00:00Z",
+    "status": "Returned",
+    "created_at": "2025-03-05T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "67c999f433b6f517ac0dd660"
+    },
+    "borrow": {
+      "$oid": "67c997a433b6f517ac0dd64a"
+    },
+    "gl": {
+      "$oid": "67c9994a33b6f517ac0dd659"
+    },
+    "rental_date": null,
+    "expected_return_date": null,
+    "return_date": null,
+    "status": "Requested",
+    "created_at": "2025-03-06T00:00:00Z"
+  },
+  {
+    "_id": {
+      "$oid": "67c999f433b6f517ac0dd661"
+    },
+    "borrow": {
+      "$oid": "67c997a433b6f517ac0dd64c"
+    },
+    "gl": {
+      "$oid": "67c9994a33b6f517ac0dd65a"
+    },
+    "rental_date": "2025-03-02T00:00:00Z",
+    "expected_return_date": "2025-03-09T00:00:00Z",
+    "return_date": null,
+    "status": "Delayed",
+    "created_at": "2025-03-02T00:00:00Z"
+  }
+],
+"games":[
+  {
+  "_id": {
+    "$oid": "67c9980433b6f517ac0dd64f"
+  },
+  "name": "קטאן",
+  "category": "אסטרטגיה",
+  "desc": "סחור, בנה והתיישב.",
+  "img": "catan.jpg",
+  "gls": [
+    {
+      "$oid": "67c9994a33b6f517ac0dd657"
+    },
+    {
+      "$oid": "67c9994a33b6f517ac0dd658"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67c9980433b6f517ac0dd650"
+  },
+  "name": "רכבת ליעד",
+  "category": "משפחתי",
+  "desc": "בנה את אימפריית הרכבות שלך.",
+  "img": "ticket-to-ride.jpg",
+  "gls": [
+    {
+      "$oid": "67c9994a33b6f517ac0dd659"
+    },
+    {
+      "$oid": "67c9994a33b6f517ac0dd65a"
+    }
+  ]
+}],
+"gls":[
+  {
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd657"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd64f"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd653"
+  },
+  "status": 1
+},
+{
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd658"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd64f"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd654"
+  },
+  "status": 2
+},
+{
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd659"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd650"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd653"
+  },
+  "status": 1
+},
+{
+  "_id": {
+    "$oid": "67c9994a33b6f517ac0dd65a"
+  },
+  "game": {
+    "$oid": "67c9980433b6f517ac0dd650"
+  },
+  "location": {
+    "$oid": "67c9989e33b6f517ac0dd654"
+  },
+  "status": 3
+}],
+"locations":[
+  {
+  "_id": {
+    "$oid": "67c9989e33b6f517ac0dd653"
+  },
+  "name": "מרכז תל אביב",
+  "leader": {
+    "$oid": "67c997a433b6f517ac0dd64b"
+  },
+  "manager": {
+    "$oid": "67c997a433b6f517ac0dd64c"
+  },
+  "gls": [
+    {
+      "$oid": "67c9994a33b6f517ac0dd657"
+    },
+    {
+      "$oid": "67c9994a33b6f517ac0dd659"
+    }
+  ],
+  "borrowings": [
+    {
+      "$oid": "67c999f433b6f517ac0dd65e"
+    },
+    {
+      "$oid": "67c999f433b6f517ac0dd660"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67c9989e33b6f517ac0dd654"
+  },
+  "name": "מרכז ירושלים",
+  "leader": {
+    "$oid": "67c997a433b6f517ac0dd64b"
+  },
+  "manager": {
+    "$oid": "67c997a433b6f517ac0dd64c"
+  },
+  "gls": [
+    {
+      "$oid": "67c9994a33b6f517ac0dd658"
+    },
+    {
+      "$oid": "67c9994a33b6f517ac0dd65a"
+    }
+  ],
+  "borrowings": [
+    {
+      "$oid": "67c999f433b6f517ac0dd65f"
+    },
+    {
+      "$oid": "67c999f433b6f517ac0dd661"
+    }
+  ]
+}]
+
+}
+

@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "name": "תמר לבנוני",
+      "email": "orit.cohen@example.com",
+      "phone": "0538311420",
+      "isAdmin": true,
+      "isLeader": false,
+      "isManager": false
+    }
+  ]
+}
