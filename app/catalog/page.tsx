@@ -1,6 +1,6 @@
 "use client";
+import { Game } from '@prisma/client';
 import React, { useEffect, useState } from 'react';
-import { Game } from '../api/models';
 
 const CatalogPage = () => {
     const [games, setGames] = useState<Game[]>([]);
@@ -28,7 +28,7 @@ const CatalogPage = () => {
                 {games.map((game: Game) => (
                     <div key={game.id} className="game-card">
                         <h2>{game.name}</h2>
-                        <p>{game.description}</p>
+                        <p>{game.desc}</p>
                     </div>
                 ))}
             </div>

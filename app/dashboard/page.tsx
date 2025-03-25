@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Game, Location, GL, Borrowing, GetUserRes } from '../api/models';
+import { UserFull } from '../stores/types';
 
 const DashboardPage = () => {
-  const [user, setUser] = useState<GetUserRes | null>(null);
+  const [user, setUser] = useState<UserFull | null>(null);
 
   const router = useRouter();
 

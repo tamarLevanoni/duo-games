@@ -19,7 +19,11 @@ const useManagerStore = create<ManagerStore>((set) => ({
   leader: null,
   fetchManagerData: async (id) => {
     try {
-      const response = await fetch(`/api/manager/${id}`);
+      const response = await fetch(`/api/manager/${id}`, {
+        headers: {
+          'id': id
+        }
+      });
       const data = await response.json();
 
       set({

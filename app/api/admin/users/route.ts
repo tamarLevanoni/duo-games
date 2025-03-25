@@ -47,6 +47,53 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
+export async function PUT(req: NextApiRequest, res: NextApiResponse) {
+  const data = req.body;
+  const { id } = req.query;
+
+  try {
+    const user = await prisma.user.update({
+      where: { id: id as string },
+      data: {
+        email: data.email,
+        name: data.name,
+        phone: data.phone,
+        isAdmin: data.isAdmin,
+        isLeader: data.isLeader,
+        isManager: data.isManager,
+      },
+    });
+    return new NextResponse(JSON.stringify(user), { status: 200 });
+  } catch (error) {
+    console.error("Unexpected server error:", error);
+    return new NextResponse(
+      JSON.stringify({ error: "Internal server error" }),
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect(); // Always disconnect when you're done
+  }
+}
+
+export async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+  const { id } = req.query;
+
+  try {
+    await prisma.user.delete({
+      where: { id: id as string },
+    });
+    return new NextResponse(null, { status: 204 });
+  } catch (error) {
+    console.error("Unexpected server error:", error);
+    return new NextResponse(
+      JSON.stringify({ error: "Internal server error" }),
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect(); // Always disconnect when you're done
+  }
+}
+
 
 
 
