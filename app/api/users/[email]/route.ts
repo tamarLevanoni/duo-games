@@ -7,14 +7,14 @@ import { GL_DETAILS, USER_CONTACT_FIELDS } from '@/app/stores/types';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextApiRequest,  { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: NextApiRequest,  { params }: { params: Promise<{ email: string }> }) {
   // const id = (await req.query).id
-  const id = (await params).id;
+  const email = (await params).email;
 // const id="c56d7096-fa75-429c-bc7f-3c22db145718";
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email: id as string, // type casting the id to string
+        email: email as string, // type casting the id to string
       },
       include: {
         borrowings: {

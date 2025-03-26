@@ -51,7 +51,7 @@ export interface UserFull {
 
 export interface BorrowingForBorrow {
   id: string; // מזהה ההשאלה
-  gl: GLForBorrow; // פרטי המשחק שהושאל
+  gl: GLForBorrow[]; // פרטי המשחק שהושאל
   location: {
     name: string; // שם המוקד
     manager: UserContactInfo; // פרטי רכז המוקד
@@ -97,7 +97,7 @@ export interface LocationForManager {
 export interface BorrowingForLocation {
   id: string; // מזהה ההשאלה 
   borrow: UserContactInfo; // פרטי המשתמש שהשאיל
-  gl: GLForLocation; // פרטי המשחק במוקד
+  gl: GLForLocation[]; // פרטי המשחק במוקד
   rental_date: Date | null; // תאריך ההשאלה
   expected_return_date: Date | null; // תאריך החזרה צפוי
   return_date: Date | null; // תאריך החזרה בפועל
@@ -122,7 +122,7 @@ export interface CreateBorrowingReq {
 // ApproveBorrowRequest: בקשה לאישור השאלה
 export interface ApproveBorrowRequest {
   id: string; // מזהה הבקשה
-  gl: string; // מזהה המשחק
+  gl: string[]; // מזהה המשחק
   rental_date: Date; // תאריך ההשאלה
   expected_return_date: Date; // תאריך החזרה צפוי
 }

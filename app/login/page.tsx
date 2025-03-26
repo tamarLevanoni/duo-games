@@ -2,40 +2,32 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useUserStore from '@/app/stores/userStore';
+import {useAuthStore} from '@/app/stores/authStore';
+import {useSession} from 'next-auth/react';
 
 const LoginPage = () => {
-  const [userName, setuserName] = useState('');
+  const [email, setEmail] = useState("");
   const router = useRouter();
-  const login = useUserStore((state) => state.login);
+  const login = useAuthStore((state) => state.login);
+  const fetchUser = useUserStore((state) => state.fetchUser);
   const user = useUserStore((state) => state.user);
+  const { data: session, status } = useSession();
 
   const handleLogin = async () => {
-    const isLogin = await login(userName);
-    // if (isLogin) {
-    //   console.log('user', user,user?.isManager);
-      
-    //   if (user?.isAdmin) {
-    //     router.push('/admin'); // Redirect to admin page
-    //   } else if (user?.isManager) {
-    //     router.push('/manager'); // Redirect to manager page
-    //   } else {
-    //     router.push('/profile'); // Redirect to profile page for regular users
-    //   }
-    // }
+    const success = await login(email);
+    console.log('success', success);
+    if (success) await fetchUser();
   };
   useEffect(() => {
     console.log('user', user,user?.isManager);
-    if (user) {
-      if (user.isAdmin) {
-        router.push('/admin');
-      } else if (user.isManager) {
-        router.push('/manager');
-      } else {
-        router.push('/profile');
-      }
+    console.log('session', session);
+console.log('status', status);
+
+    if (status === 'authenticated') {
+      router.push('/profile');
     }
   }
-  , [user, router]);
+  , [status, router]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -43,8 +35,8 @@ const LoginPage = () => {
       <input
         type="text"
         placeholder="Enter User Name"
-        value={userName}
-        onChange={(e) => setuserName(e.target.value)}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         className="mb-4 p-2 border border-gray-300 rounded"
       />
       <button onClick={handleLogin} className="p-2 bg-blue-500 text-white rounded">

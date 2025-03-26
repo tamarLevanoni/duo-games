@@ -20,7 +20,7 @@ const BorrowingManagement = () => {
           {borrowings.map((item) => (
             <tr key={item.id}>
               <td className="py-2">{item.borrow.name}</td>
-              <td className="py-2">{item.gl.game.name}</td>
+              <td className="py-2">{item.gl.map((gl)=>gl.game.name).join(",")}</td>
               <td className="py-2">{item.status}</td>
             </tr>
           ))}
