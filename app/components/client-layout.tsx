@@ -1,32 +1,31 @@
 "use client";
 
 import { useEffect } from "react";
-import useUserStore from '@/app/stores/userStore';
-import {useAuthStore} from '@/app/stores/authStore';
-import { getSession } from "next-auth/react";
-import { SessionProvider } from "next-auth/react";
-import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useUserStore,useLocaionsStore,useGameStore } from "../stores/stores";
+
 
 export default function ClientLayout({
   children,
-  // session
-}: Readonly<{
+}:
+Readonly<{
   children: React.ReactNode;
-  // session: any; // type this properly for your session data
 }>) {
-  // const restoreUser = useUserStore((state) => state.restoreUser);
-  const { isLoggedIn, token } = useAuthStore();
-  const fetchUser = useUserStore((state) => state.fetchUser);
-  const login = useAuthStore((state) => state.login);
 
+  const fetchUser = useUserStore((state) => state.fetchUser);
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  // const login = useAuthStore((state) => state.login);
+  const { data: session, status } = useSession();
   useEffect(() => {
     const checkSession = async () => {
-      const success = await login();
-      console.log('success', success);
-      if (success) await fetchUser();
+      // const success = await login();
+      // console.log('success', success);
+      if (status == "authenticated" && !isLoggedIn) await fetchUser(session.user.email);
     };
     checkSession();
-  }, []);
+    useGameStore.getState().fetchGames();
+    useLocaionsStore.getState().fetchLocations();
+  }, [status]);
 
-  return <SessionProvider>{children}</SessionProvider>;
+  return <>{children}</>;
 }

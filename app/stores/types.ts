@@ -1,4 +1,4 @@
-import { BorrowingStatus, GameStatus } from "@prisma/client";
+import { BorrowingStatus, GameCategory, GameStatus } from "@prisma/client";
 
 // הקובץ מכיל את כל הטיפוסים הנדרשים לאפליקציה  
 export interface UserContactInfo {
@@ -17,9 +17,9 @@ export const USER_CONTACT_FIELDS = {
 
 // GetLocationInfoRes: תגובה לבקשת מידע על מוקד
 export interface LocationInfo {
+  id: string; // מזהה המוקד
   name: string; // שם המוקד
   manager: UserContactInfo; // פרטי רכז המוקד
-  gls: GLForLocation[]; // רשימת המשחקים במוקד
 }
 
 export interface GameDetails {
@@ -36,7 +36,19 @@ export const GL_DETAILS = {
 };
 
 
-
+export interface gamesInfo {
+  id: string;
+  name: string;
+  category: GameCategory;
+  desc: string;
+  img: string;
+  gls: {
+    id: string;
+    status: GameStatus;
+    locationId: string;
+    expectedReturnDate: Date|null;//from borrowing in status 'borrowed'
+  }[]
+}
 // User: מייצג משתמש במערכת
 export interface UserFull {
   id: string; // מזהה המשתמש
@@ -57,7 +69,6 @@ export interface BorrowingForBorrow {
     manager: UserContactInfo; // פרטי רכז המוקד
   }; // פרטי המוקד
   rental_date: Date | null; // תאריך ההשאלה
-  expected_return_date: Date | null; // תאריך החזרה צפוי
   return_date: Date | null; // תאריך החזרה בפועל
   status: BorrowingStatus; // סטטוס ההשאלה ('התבקש', 'מושאל', 'איחור', 'הוחזר')
 }
@@ -72,6 +83,7 @@ export interface GLForBorrow {
   // }; // פרטי המוקד
   // location:LocationForGL
   status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
+  exepectedReturnDate: Date | null; // תאריך החזרה צפוי
 }
 
 
@@ -99,7 +111,6 @@ export interface BorrowingForLocation {
   borrow: UserContactInfo; // פרטי המשתמש שהשאיל
   gl: GLForLocation[]; // פרטי המשחק במוקד
   rental_date: Date | null; // תאריך ההשאלה
-  expected_return_date: Date | null; // תאריך החזרה צפוי
   return_date: Date | null; // תאריך החזרה בפועל
   status: BorrowingStatus; // סטטוס ההשאלה
 }
@@ -109,6 +120,7 @@ export interface GLForLocation {
   id: string; // מזהה המשחק במוקד 
   game: GameDetails; // פרטי המשחק
   status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
+  exepectedReturnDate: Date | null; // תאריך החזרה צפוי
 }
 
 
@@ -124,7 +136,7 @@ export interface ApproveBorrowRequest {
   id: string; // מזהה הבקשה
   gl: string[]; // מזהה המשחק
   rental_date: Date; // תאריך ההשאלה
-  expected_return_date: Date; // תאריך החזרה צפוי
+  expected_return_date?: Date; // תאריך החזרה צפוי
 }
 
 // ReturnBorrowingReq: בקשה להחזרת השאלה

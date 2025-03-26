@@ -2,32 +2,49 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useUserStore from '@/app/stores/userStore';
-import {useAuthStore} from '@/app/stores/authStore';
-import {useSession} from 'next-auth/react';
+import {useSession, signIn} from 'next-auth/react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const router = useRouter();
-  const login = useAuthStore((state) => state.login);
   const fetchUser = useUserStore((state) => state.fetchUser);
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const user = useUserStore((state) => state.user);
   const { data: session, status } = useSession();
 
   const handleLogin = async () => {
-    const success = await login(email);
-    console.log('success', success);
-    if (success) await fetchUser();
-  };
-  useEffect(() => {
-    console.log('user', user,user?.isManager);
-    console.log('session', session);
-console.log('status', status);
-
-    if (status === 'authenticated') {
-      router.push('/profile');
+    try {
+      const success = await signIn("credentials", { email,
+         redirect: false,
+        });
+      console.log('success', success);
+      // if (success?.ok) await fetchUser();
+      if (success?.ok) router.push('/profile');
     }
-  }
-  , [status, router]);
+    catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  };
+//   useEffect(() => {
+//     console.log('user', user,user?.isManager);
+//     console.log('session', session);
+// console.log('status', status);
+
+//     if (isLoggedIn) {
+//       router.push('/profile');
+//     }
+//   }
+//   , [isLoggedIn, router]);
+//   useEffect(() => {
+//     console.log('user', user,user?.isManager);
+//     console.log('session', session);
+// console.log('status', status);
+
+//     if (status === 'authenticated') {
+//       router.push('/profile');
+//     }
+//   }
+//   , [status, router]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

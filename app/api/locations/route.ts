@@ -1,40 +1,35 @@
-// import { NextRequest, NextResponse } from 'next/server';
-// import { readData, writeData } from '../../../lib/data';
-// import { Location } from '../models';
+// pages/api/users/[id].ts
+import { type NextRequest,NextResponse } from 'next/server'
+import { PrismaClient } from '@prisma/client';
+import { getServerSession } from "next-auth";
+// import { authOptions } from "@/app/lib/auth";
+import { LocationInfo, USER_CONTACT_FIELDS } from '../../stores/types';
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-// export async function GET(req: NextRequest) {
-//   const data = readData();
-//   const { searchParams } = new URL(req.url);
-//   const locationId = searchParams.get('locationId');
+const prisma = new PrismaClient();
 
-//   if (locationId) {
-//     const location = data.locations.find((loc) => loc.id === parseInt(locationId));
-//     if (!location) {
-//       return NextResponse.json({ error: 'Location not found' }, { status: 404 });
-//     }
-//     return NextResponse.json(location);
-//   }
+export async function GET(
+  req: NextRequest
+): Promise<NextResponse<LocationInfo[] | { message: string }>> {
+  try {
+   const locations= await prisma.location.findMany({
+      include: {
+        manager: USER_CONTACT_FIELDS,
+    }})
 
-//   return NextResponse.json(data.locations);
-// }
+    return NextResponse.json(locations, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "Something went wrong!" },
+      { status: 500 }
+    );
 
-// export async function POST(req: NextRequest) {
-//   const data = readData();
-//   const { name, admin_id, leader_id } = await req.json();
-//   const admin = data.users.find((u) => u.id === admin_id);
-//   const leader = data.users.find((u) => u.id === leader_id);
-//   if (!admin || !leader) {
-//     return NextResponse.json({ error: 'Admin or Leader not found' }, { status: 404 });
-//   }
-//   const newLocation: Location = {
-//     id: data.locations.length > 0 ? data.locations[data.locations.length - 1].id + 1 : 1,
-//     name,
-//     admin,
-//     leader,
-//     games: [],
-//     borrowings: [],
-//   };
-//   data.locations.push(newLocation);
-//   writeData(data);
-//   return NextResponse.json(newLocation, { status: 201 });
-// }
+    // return new NextResponse(
+    //   JSON.stringify({ message: "Something went wrong!" })
+    // );
+  } finally {
+    await prisma.$disconnect(); // Always disconnect when you're done
+  }
+}
+

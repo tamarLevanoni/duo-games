@@ -8,7 +8,7 @@ export interface ManagerStore {
   gls: GLForLocation[];
   borrowings: BorrowingForLocation[];
   leader: UserContactInfo | null;
-  fetchManagerData: (id: string) => Promise<void>;
+  fetchManagerData: () => Promise<void>;
 }
 
 const useManagerStore = create<ManagerStore>((set) => ({
@@ -17,13 +17,9 @@ const useManagerStore = create<ManagerStore>((set) => ({
   gls: [],
   borrowings: [],
   leader: null,
-  fetchManagerData: async (id) => {
+  fetchManagerData: async () => {
     try {
-      const response = await fetch(`/api/manager/${id}`, {
-        headers: {
-          'id': id
-        }
-      });
+      const response = await fetch(`/api/manager`);
       const data = await response.json();
 
       set({

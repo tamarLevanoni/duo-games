@@ -37,9 +37,9 @@ model User {
   name       String
   email      String      @unique
   phone      String
-  isAdmin    Boolean
-  isLeader   Boolean
-  isManager  Boolean
+  isAdmin    Boolean   @default(false)
+  isLeader   Boolean  @default(false)
+  isManager  Boolean @default(false)
   borrowings Borrowing[]
 
   LocationLeader  Location[] @relation("Leader")
@@ -54,9 +54,8 @@ model Borrowing {
   locationId         String
   location           Location        @relation(fields: [locationId], references: [id])
   rentalDate         DateTime?
-  expectedReturnDate DateTime?
   returnDate         DateTime?
-  status             BorrowingStatus
+  status             BorrowingStatus @default(Requested)
   createdAt          DateTime        @default(now())
 }
 
@@ -76,6 +75,7 @@ model GL {
   locationId String
   location   Location    @relation(fields: [locationId], references: [id])
   status     GameStatus
+  expectedReturnDate DateTime?
   borrowings Borrowing[]
 }
 

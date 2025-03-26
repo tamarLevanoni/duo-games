@@ -1,16 +1,16 @@
 // pages/api/users/[id].ts
-import { type NextRequest,NextResponse } from 'next/server'
+import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/auth";
-import { gamesInfo } from '@/app/stores/types';
 // import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const prisma = new PrismaClient();
 
 export async function GET(
-  req: NextRequest
-): Promise<NextResponse<gamesInfo[] | { message: string }>> {
+  req: NextApiRequest
+) {
   try {
     const games = await prisma.game.findMany({
       include: {
@@ -23,8 +23,6 @@ export async function GET(
         },
       },
     }});
-
-    return NextResponse.json(games, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

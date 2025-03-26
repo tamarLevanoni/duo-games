@@ -9,7 +9,7 @@ import InventoryManagement from "./InventoryManagement";
 import { useState } from "react";
 import { Tabs } from "@radix-ui/themes";
 import useManagerStore from "@/app/stores/managerStore";
-import { useAuthStore } from "@/app/stores/authStore";
+// import { useAuthStore } from "@/app/stores/authStore";
 
 // import { Tab } from '@headlessui/react';
 
@@ -18,14 +18,6 @@ const ManagerComponent = () => {
   const user = useUserStore((state) => state.user);
   const fetchManagerData = useManagerStore((state) => state.fetchManagerData);
 
-  useEffect(() => {
-    if (user?.id) {
-      const fetchData = async () => {
-        await fetchManagerData(user.id);
-      };
-      fetchData();
-    }
-  }, [user, fetchManagerData]);
 
   const tabs = [
     { key: 1, name: "ניהול השאלות", component: <BorrowingManagement /> },
