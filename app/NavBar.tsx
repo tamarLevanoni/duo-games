@@ -9,6 +9,7 @@ import { MdMenu } from 'react-icons/md';
 const NavBar = () => {
   const links = [
     { label: "דף הבית", href: "/" },
+    {label:"פרופיל", href:"/profile"},
     { label: "השאלת משחק", href: "/lending-page" },
     { label: "מוקדים", href: "/locations" },
     { label: "קטלוג", href: "/catalog" },
