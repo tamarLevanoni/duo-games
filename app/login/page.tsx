@@ -2,24 +2,22 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useUserStore from '@/app/stores/userStore';
-import {useSession, signIn} from 'next-auth/react';
+import {useSession} from 'next-auth/react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const router = useRouter();
-  const fetchUser = useUserStore((state) => state.fetchUser);
+  const signIn = useUserStore((state) => state.signIn);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const user = useUserStore((state) => state.user);
   const { data: session, status } = useSession();
 
   const handleLogin = async () => {
     try {
-      const success = await signIn("credentials", { email,
-         redirect: false,
-        });
+      const success = await signIn(email);
       console.log('success', success);
       // if (success?.ok) await fetchUser();
-      if (success?.ok) router.push('/profile');
+      if (success) router.push('/profile');
     }
     catch (error) {
       console.error('Failed to fetch user data:', error);

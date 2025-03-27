@@ -33,7 +33,7 @@ export async function GET(
         borrowings: {
           include: {
             borrow: USER_CONTACT_FIELDS,
-            gl: GL_DETAILS,
+            gls: GL_DETAILS,
           },
         },
       },

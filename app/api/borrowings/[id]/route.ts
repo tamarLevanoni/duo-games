@@ -23,7 +23,7 @@ export async function PUT(req: NextRequest, {params}:{ params: Promise<{ id: str
         console.error("Unexpected server error:", error);
         return new NextResponse(
         JSON.stringify({ error: "Internal server error" }),
-        { status: 500 }
+        { status: 500,statusText:"Internal server error" }
         );
     } finally {
         await prisma.$disconnect(); // Always disconnect when you're done

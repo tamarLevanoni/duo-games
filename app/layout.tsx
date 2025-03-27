@@ -7,6 +7,7 @@ import NavBar from "./NavBar";
 import ClientLayout from "./components/client-layout";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/SessionProvider";
+import { useGameStore, useLocaionsStore } from "./stores/stores";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // const session = await getServerSession();
-
+  // useGameStore.getState().fetchGames();
+  // useLocaionsStore.getState().fetchLocations();
   return (
     <html lang="he" dir="rtl">
       <body

@@ -4,7 +4,7 @@ import React, { Component, use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useUserStore from "@/app/stores/userStore";
 // import { useAuthStore } from "@/app/stores/authStore";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import ManagerComponent from "./components/manager";
 import UserComponent from "./components/user";
 import AdminComponent from "./components/admin";
@@ -13,7 +13,7 @@ import useManagerStore from "../stores/managerStore";
 const ProfilePage: React.FC = () => {
   const router = useRouter();
   const user = useUserStore((state) => state.user);
-  const clearUser = useUserStore((state) => state.clearUser);
+  const signOut = useUserStore((state) => state.signOut);
   // const login = useAuthStore((state) => state.login);
   // const logout = useAuthStore((state) => state.logout);
   const [profileComponent, setProfileComponent] = useState<React.ReactNode>(null);
@@ -41,10 +41,9 @@ const ProfilePage: React.FC = () => {
         setProfileComponent(<UserComponent />);
       }
     }
-  }, [user, router]);
+  }, [user?.isManager]);
   const handleLogout = () => {
     signOut();
-    clearUser();
     // router.push("/login");
   };
 

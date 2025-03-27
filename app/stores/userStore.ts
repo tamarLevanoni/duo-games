@@ -1,68 +1,113 @@
-import { User } from '@prisma/client';
-import { create } from 'zustand';
+import { User } from "@prisma/client";
+import { create } from "zustand";
 // import { useAuthStore } from './authStore';
-import { getSession } from "next-auth/react"
+import { getSession, signIn, signOut } from "next-auth/react";
+import { BorrowingForBorrow, CreateBorrowingReq, UserContactInfo, UserFull } from "./types";
+import { userAgent } from "next/server";
 
 export interface UserStore {
   isLoggedIn: boolean;
-  user: User | null;
-  managerData: any | null;
+  user: UserFull | null;
+  // myBorrowings: BorrowingForBorrow[];
   // login: (email: string) => Promise<boolean>;
-  fetchUser: (email:string) => Promise<void>;
-  clearUser: () => void;
-
+  signIn: (email?: string) => Promise<boolean>;
+  signOut: () => void;
+  signUp: (user: UserContactInfo) => void;
+  update: (user: UserContactInfo) => void;
+  addBorrwing:(gls:string[],locationId:string)=>void;
   // logout: () => void;
   // restoreUser: () => void;
 }
 
-const useUserStore = create<UserStore>((set,get) => ({
+const useUserStore = create<UserStore>((set, get) => ({
   isLoggedIn: false,
   user: null,
+  // myBorrowings: [],
   // token: null,
-  managerData: null,
-  fetchUser: async (email) => {
-
+  signUp: async (user) => {
     try {
-      // const session = await getSession();
-      // if (!session) {
-      //   console.error("Session not found");
-      //   return;
-      // }
-      // console.log("Session:", session);
-      // const email = session.user.email
-      const res = await fetch(`/api/users/${email}`);
-      const userData = await res.json();
+      const response = await fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (!response.ok) {
+        console.error("Failed to create user:", response.statusText);
+        return;
+      }
+      const userData: UserFull = await response.json();
       set({ user: userData, isLoggedIn: true });
+      await signIn("credentials", { email: userData.email, redirect: false });
     } catch (error) {
-      console.error("Failed to fetch user data:", error);
+      console.error("Failed to create user:", error);
     }
   },
-  clearUser: () => set({ user: null, isLoggedIn: false }),
-
-  // login: async (email) => {
-  //   try {    
-  //     const response=await signIn('email', { email }); 
-  //     // const response = await fetch(`/api/users/${email}`);
-  //     // const userData: User = await response.json();
-  //     localStorage.setItem('email', email);
-  //     set({ isLoggedIn: true, user: userData, token: null });
-  //     return true;
-  //   } catch (error) {
-  //     console.error('Failed to fetch user data:', error);
-  //     return false;
-  //   }
-  // },
-  // logout: () => {
-  //   localStorage.removeItem('email');
-  //   set({ isLoggedIn: false, user: null, token: null });
-  // },
- 
-  // restoreUser: () => {
-  //   const email = localStorage.getItem('email');
-  //   if (email) {
-  //     get().login(email);
-  //   }
-  // }
+  signIn: async (email) => {
+    try {
+      const session = await getSession();
+      if (!email && !session) return false;
+      if (email && !session) {
+        await signIn("credentials", { email, redirect: false });
+      }
+      const res = await fetch(`/api/users/me`);
+      const userData = await res.json();
+      set({ user: userData, isLoggedIn: true });
+      return true;
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+      return false;
+    }
+  },
+  signOut: async () => {
+    await signOut();
+    set({ user: null, isLoggedIn: false });
+  },
+  update: async (user) => {
+    try {
+      const response = await fetch(`/api/users/${get().user?.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (!response.ok) {
+        console.error("Failed to update user:", response.statusText);
+        return;
+      }
+      const userData: UserFull = await response.json();
+      set({ user: userData });
+    } catch (error) {
+      console.error("Failed to update user:", error);
+    }
+  },
+  addBorrwing: async (gls,locationId) => {
+    try {
+      if(!get().user) throw new Error("User not found");
+      const response = await fetch(`/api/borrowings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({gls,borrowId:get().user?.id,locationId}),
+      });
+      if (!response.ok) {
+        console.error("Failed to create borrowing:", response.statusText);
+        return;
+      }
+      const borrowingData: BorrowingForBorrow = await response.json();
+      set({
+        user: {
+          ...get().user!,
+          borrowings: [...(get().user?.borrowings || []), borrowingData],
+        },
+      });
+    } catch (error) {
+      console.error("Failed to create borrowing:", error);
+    }
+  },
 }));
 
 export default useUserStore;

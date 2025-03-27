@@ -50,7 +50,7 @@ model Borrowing {
   id                 String          @id @default(uuid())
   borrowId           String
   borrow             User            @relation(fields: [borrowId], references: [id])
-  gl                 GL[]              
+  gls                 GL[]              
   locationId         String
   location           Location        @relation(fields: [locationId], references: [id])
   rentalDate         DateTime?

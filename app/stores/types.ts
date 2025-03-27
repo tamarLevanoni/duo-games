@@ -46,7 +46,7 @@ export interface gamesInfo {
     id: string;
     status: GameStatus;
     locationId: string;
-    expectedReturnDate: Date|null;//from borrowing in status 'borrowed'
+    expectedReturnDate?: Date|null;//from borrowing in status 'borrowed'
   }[]
 }
 // User: מייצג משתמש במערכת
@@ -63,7 +63,7 @@ export interface UserFull {
 
 export interface BorrowingForBorrow {
   id: string; // מזהה ההשאלה
-  gl: GLForBorrow[]; // פרטי המשחק שהושאל
+  gls: GLForBorrow[]; // פרטי המשחק שהושאל
   location: {
     name: string; // שם המוקד
     manager: UserContactInfo; // פרטי רכז המוקד
@@ -109,7 +109,7 @@ export interface LocationForManager {
 export interface BorrowingForLocation {
   id: string; // מזהה ההשאלה 
   borrow: UserContactInfo; // פרטי המשתמש שהשאיל
-  gl: GLForLocation[]; // פרטי המשחק במוקד
+  gls: GLForLocation[]; // פרטי המשחק במוקד
   rental_date: Date | null; // תאריך ההשאלה
   return_date: Date | null; // תאריך החזרה בפועל
   status: BorrowingStatus; // סטטוס ההשאלה
@@ -129,12 +129,12 @@ export interface GLForLocation {
 // CreateBorrowingReq: בקשה ליצירת השאלה
 export interface CreateBorrowingReq {
   borrow: string; // מזהה המשתמש שמבקש להשאיל
-  gl: string; // מזהה המשחק המבוקש
+  gls: string[]; // מזהה המשחק המבוקש
 }
 // ApproveBorrowRequest: בקשה לאישור השאלה
 export interface ApproveBorrowRequest {
   id: string; // מזהה הבקשה
-  gl: string[]; // מזהה המשחק
+  gls: string[]; // מזהה המשחק
   rental_date: Date; // תאריך ההשאלה
   expected_return_date?: Date; // תאריך החזרה צפוי
 }

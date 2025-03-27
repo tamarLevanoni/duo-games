@@ -9,10 +9,12 @@ export interface LocationStore {
   // removelocation: (id: string) => void;
 }
 
-const useLocationStore = create<LocationStore>((set) => ({
+const useLocationStore = create<LocationStore>((set,get) => ({
   locations: [],
   fetchLocations:async () => {
     try {
+      console.log('fetching locations'+get().locations.length);
+      if (get().locations.length) return;
       const response = await fetch('/api/locations');
       if(!response.ok){
         const error = await response.json();

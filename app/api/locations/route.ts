@@ -1,9 +1,9 @@
 // pages/api/users/[id].ts
-import { type NextRequest,NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client';
+import { type NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 // import { authOptions } from "@/app/lib/auth";
-import { LocationInfo, USER_CONTACT_FIELDS } from '../../stores/types';
+import { LocationInfo, USER_CONTACT_FIELDS } from "../../stores/types";
 // import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const prisma = new PrismaClient();
@@ -12,10 +12,15 @@ export async function GET(
   req: NextRequest
 ): Promise<NextResponse<LocationInfo[] | { message: string }>> {
   try {
-   const locations= await prisma.location.findMany({
+    const locations = await prisma.location.findMany({
       include: {
         manager: USER_CONTACT_FIELDS,
-    }})
+      },
+      omit: {
+        managerId: true,
+        leaderId: true,
+      },
+    });
 
     return NextResponse.json(locations, { status: 200 });
   } catch (error) {
@@ -32,4 +37,3 @@ export async function GET(
     await prisma.$disconnect(); // Always disconnect when you're done
   }
 }
-

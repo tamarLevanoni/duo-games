@@ -31,7 +31,7 @@ export async function GET(
       include: {
         borrowings: {
           include: {
-            gl: GL_DETAILS,
+            gls: GL_DETAILS,
             location: {
               select: {
                 name: true,
