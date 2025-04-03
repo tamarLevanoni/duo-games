@@ -9,9 +9,10 @@ export interface ManagerStore {
   borrowings: BorrowingForLocation[];
   leader: UserContactInfo | null;
   fetchManagerData: () => Promise<void>;
+  updateBorrowing: (data: Partial<BorrowingForLocation>) => Promise<void>;
 }
 
-const useManagerStore = create<ManagerStore>((set) => ({
+const useManagerStore = create<ManagerStore>((set,get) => ({
   locationId: "",
   locationName: "",
   gls: [],
@@ -30,6 +31,37 @@ const useManagerStore = create<ManagerStore>((set) => ({
       });
     } catch (error) {
       console.error("Failed to fetch manager data:", error);
+    }
+  },
+  updateBorrowing: async (data: Partial<BorrowingForLocation>) => {
+    try {
+      const response = await fetch(`/api/borrowings/${data.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to update borrowing:", response.statusText);
+        throw new Error("Failed to update borrowing");
+      }
+
+      const result = await response.json();
+      const updatedBorrowing = result.borrowing;
+      console.log("Updated borrowing:", updatedBorrowing);
+
+      set((state) => ({
+        borrowings: state.borrowings.map((borrowing) =>
+          borrowing.id === data.id
+            ? { ...borrowing, ...updatedBorrowing }
+            : borrowing
+        ),
+      }));
+      console.log("Borrowing updated successfully",get().borrowings);
+    } catch (error) {
+      console.error("Failed to update borrowing:", error);
     }
   },
 }));

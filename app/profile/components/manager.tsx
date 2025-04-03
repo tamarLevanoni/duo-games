@@ -2,9 +2,9 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useUserStore from "@/app/stores/userStore";
-import BorrowingManagement from "./BorrowingManagement";
-import AddBorrowing from "./AddBorrowing";
-import GameAvailability from "./GameAvailability";
+import BorrowingManagement from "./manager/BorrowingManagement";
+import AddBorrowing from "./manager/AddBorrowing";
+import GameAvailability from "./manager/GameAvailability";
 import InventoryManagement from "./InventoryManagement";
 import { useState } from "react";
 import { Tabs } from "@radix-ui/themes";
@@ -17,7 +17,8 @@ const ManagerComponent = () => {
   const router = useRouter();
   const user = useUserStore((state) => state.user);
   const fetchManagerData = useManagerStore((state) => state.fetchManagerData);
-
+  const leader = useManagerStore((state) => state.leader);
+  const locationName = useManagerStore((state) => state.locationName);
 
   const tabs = [
     { key: 1, name: "ניהול השאלות", component: <BorrowingManagement /> },
@@ -25,27 +26,43 @@ const ManagerComponent = () => {
     { key: 3, name: "ניהול משחקים", component: <GameAvailability /> },
   ];
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl mb-4">Manager Page</h1>
-      <Tabs.Root defaultValue={tabs[0].name}>
-        <Tabs.List className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-          {tabs.map((tab) => (
-            <Tabs.Trigger
-              key={tab.key}
-              value={tab.name}
-              className="w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg"
-            >
-              {tab.name}
-            </Tabs.Trigger>
-          ))}
-        </Tabs.List>
-        {tabs.map((tab, i) => (
-          <Tabs.Content key={i} value={tab.name}>
-            {tab.component}
-          </Tabs.Content>
-        ))}
-      </Tabs.Root>
+    <div className="p-4 space-y-6 text-right">
+    <h1 className="text-2xl font-bold">איזור רכז מוקד</h1>
+
+    <div className="bg-white p-4 rounded-xl shadow">
+      <h2 className="text-xl font-semibold mb-2">פרטים אישיים</h2>
+      <p>שם: {user?.name}</p>
+      <p>שם מוקד: {locationName}</p>
+      <button className="mt-2 px-4 py-2 bg-blue-600 text-white rounded">עדכון פרטים</button>
     </div>
+
+    <div className="bg-white p-4 rounded-xl shadow">
+      <h2 className="text-xl font-semibold mb-2">פרטי רכז על</h2>
+      <p>שם: {leader?.name}</p>
+      <p>טלפון: {leader?.phone}</p>
+      <p>מייל: {leader?.email}</p>
+    </div>
+    <div className="bg-white p-4 rounded-xl shadow">
+      <h2 className="text-xl font-semibold mb-2">הוספת השאלה</h2>
+      <AddBorrowing />
+    </div>
+
+
+    <div className="bg-white p-4 rounded-xl shadow">
+      <h2 className="text-xl font-semibold mb-2">ניהול השאלות</h2>
+      <BorrowingManagement />
+    </div>
+
+    <div className="bg-white p-4 rounded-xl shadow">
+      <h2 className="text-xl font-semibold mb-2">ניהול זמינות המשחקים</h2>
+      <GameAvailability />
+    </div>
+
+    <div className="bg-white p-4 rounded-xl shadow">
+      <h2 className="text-xl font-semibold mb-2">רשימת השאלות האישית</h2>
+      <InventoryManagement />
+    </div>
+  </div>
   );
 };
 

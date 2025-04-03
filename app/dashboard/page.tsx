@@ -56,9 +56,9 @@ const DashboardPage = () => {
             <li key={borrowing.id}>
                 <p>Game: {borrowing.gls.map((gl)=>gl.game.name).join(",")}</p>
                 <p>Status: {borrowing.status}</p>
-{/* {                <p>Rental date: {borrowing.rental_date}</p>
-                <p>Expected return date: {borrowing.expected_return_date}</p>
-                <p>Return date: {borrowing.return_date}</p>} */}
+{/* {                <p>Rental date: {borrowing.rentalDate}</p>
+                <p>Expected return date: {borrowing.expected_returnDate}</p>
+                <p>Return date: {borrowing.returnDate}</p>} */}
             </li>
           ))}
         </ul>
