@@ -21,6 +21,7 @@ export async function GET(
           select: {
             id: true,
             status: true,
+            expectedReturnDate:true,
             game: {
               include: {
                 gls: false,

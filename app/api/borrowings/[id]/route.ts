@@ -15,27 +15,34 @@ export async function PUT(
     if (!session?.user.role?.isManager)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const data: ApproveBorrowRequest = await req.json();
+    const data = await req.json();
+    const borrowingData: ApproveBorrowRequest = {
+        id: data.id,
+        gls: data.gls,
+        rentalDate: data.rentalDate,
+        status: data.status,
+        returnDate: data.returnDate,
+      };
     const id = (await params).id;
     // אפשרות להוסיף כאן בדיקה האם ההשאלה שייכת לרכז
     // const borrowing = await prisma.borrowing.findUnique({ where: { id } });
     // if (borrowing?.managerId !== session.user.id) {
     //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     // }
-
     const updated = await prisma.borrowing.update({
       where: { id: id as string },
       data: {
-        status: data.status,
-        rentalDate: data.rentalDate,
-        returnDate: data.returnDate,
+        ...borrowingData,
         gls: {
-          updateMany: {
-            where: { id: { in: data.gls.map((gl)=>gl.id) } },
+        set:[],
+          connect: borrowingData.gls.map((gl) => ({ id: gl.id } as any)),
+          updateMany: borrowingData.gls.map((gl) => ({
+            where: { id: gl.id },
             data: {
-              status: data.status == "Borrowed" ? "Borrowed" : "Available",
+              status: gl.status,
+              expectedReturnDate: gl.expectedReturnDate,
             },
-          },
+          })),
         },
       },
     });

@@ -25,8 +25,21 @@ const useManagerStore = create<ManagerStore>((set,get) => ({
 
       set({
         locationName: data.name,
-        gls: data.gls,
-        borrowings: data.borrowings,
+        gls: data.gls.map((gl: GLForLocation) => ({
+          ...gl,
+          expectedReturnDate: gl.expectedReturnDate
+            ? new Date(gl.expectedReturnDate)
+            : null,
+        })),
+        borrowings: data.borrowings.map((borrowing: BorrowingForLocation) => ({
+          ...borrowing,
+          rentalDate: borrowing.rentalDate?new Date(borrowing.rentalDate):null,
+          returnDate: borrowing.returnDate?new Date(borrowing.returnDate):null,
+          gls: borrowing.gls.map((gl: GLForLocation) => ({
+            ...gl,
+            expectedReturnDate: gl.expectedReturnDate?new Date(gl.expectedReturnDate):null,
+          })),
+        })),
         leader: data.leader,
       });
     } catch (error) {
@@ -55,7 +68,7 @@ const useManagerStore = create<ManagerStore>((set,get) => ({
       set((state) => ({
         borrowings: state.borrowings.map((borrowing) =>
           borrowing.id === data.id
-            ? { ...borrowing, ...updatedBorrowing }
+            ? { ...borrowing, ...data }
             : borrowing
         ),
       }));

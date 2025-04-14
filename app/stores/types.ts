@@ -68,6 +68,7 @@ export interface BorrowingForBorrow {
     name: string; // שם המוקד
     manager: UserContactInfo; // פרטי רכז המוקד
   }; // פרטי המוקד
+  createdAt: Date; // תאריך יצירת הבקשה
   rentalDate: Date | null; // תאריך ההשאלה
   returnDate: Date | null; // תאריך החזרה בפועל
   status: BorrowingStatus; // סטטוס ההשאלה ('התבקש', 'מושאל', 'איחור', 'הוחזר')
@@ -83,7 +84,7 @@ export interface GLForBorrow {
   // }; // פרטי המוקד
   // location:LocationForGL
   status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
-  exepectedReturnDate: Date | null; // תאריך החזרה צפוי
+  expectedReturnDate: Date | null; // תאריך החזרה צפוי
 }
 
 
@@ -121,7 +122,7 @@ export interface GLForLocation {
   id: string; // מזהה המשחק במוקד 
   game: GameDetails; // פרטי המשחק
   status: GameStatus; // סטטוס המשחק במוקד ('זמין', 'מושאל', 'פגום')
-  exepectedReturnDate: Date | null; // תאריך החזרה צפוי
+  expectedReturnDate?: Date | null; // תאריך החזרה צפוי
 }
 
 
@@ -129,8 +130,9 @@ export interface GLForLocation {
 
 // CreateBorrowingReq: בקשה ליצירת השאלה
 export interface CreateBorrowingReq {
-  borrow: string; // מזהה המשתמש שמבקש להשאיל
+  borrowId: string; // מזהה המשתמש שמבקש להשאיל
   gls: string[]; // מזהה המשחק המבוקש
+  locationId: string; // מזהה המוקד שבו נמצא המשחק
 }
 // ApproveBorrowRequest: בקשה לאישור השאלה
 export interface ApproveBorrowRequest {

@@ -24,7 +24,17 @@ const useGameStore = create<GameStore>()(
         }
         const games = await response.json();
         console.log(games);
-        set({ games });
+        set({
+          games: games.map((game: gamesInfo) => ({
+            ...game,
+            gls: game.gls.map((gl) => ({
+              ...gl,
+              expectedReturnDate: gl.expectedReturnDate
+                ? new Date(gl.expectedReturnDate)
+                : null,
+            })),
+          })),
+        });
       } catch (error) {}
     },
     addGame: (game) => {},
