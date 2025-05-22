@@ -9,6 +9,7 @@ import InventoryManagement from "./InventoryManagement";
 import { useState } from "react";
 import { Tabs } from "@radix-ui/themes";
 import useManagerStore from "@/app/stores/managerStore";
+import UserComponent from "./user";
 // import { useAuthStore } from "@/app/stores/authStore";
 
 // import { Tab } from '@headlessui/react';
@@ -61,6 +62,7 @@ const ManagerComponent = () => {
     <div className="bg-white p-4 rounded-xl shadow">
       <h2 className="text-xl font-semibold mb-2">רשימת השאלות האישית</h2>
       <InventoryManagement />
+      <UserComponent/>
     </div>
   </div>
   );

@@ -23,8 +23,11 @@ export type PendingDialogProps = {
   games: GLForLocation[];
 };
 
-
-export default function PendingDialog({ borrowing, handleUpdate, games }: PendingDialogProps) {
+export default function PendingDialog({
+  borrowing,
+  handleUpdate,
+  games,
+}: PendingDialogProps) {
   const [rentalDate, setRentalDate] = useState<Date>();
   const [expectedReturnDate, setExpectedReturnDate] = useState<Date>();
   const [returnDate, setReturnDate] = useState<Date>();
@@ -51,7 +54,10 @@ export default function PendingDialog({ borrowing, handleUpdate, games }: Pendin
             .filter((g) => selectedGames.includes(g.id))
             .map((g) => ({
               ...g,
-              expectedReturnDate: expectedReturnDate,
+              expectedReturnDate: rentalDate
+                ? expectedReturnDate ||
+                  new Date(rentalDate.getTime() + 7 * 24 * 60 * 60 * 1000)
+                : null,
               status:
                 status === BorrowingStatus.Borrowed
                   ? GameStatus.Borrowed
@@ -118,21 +124,20 @@ export default function PendingDialog({ borrowing, handleUpdate, games }: Pendin
             }
           />
 
-              <label className="block text-sm font-medium">משחקים</label>
+          <label className="block text-sm font-medium">משחקים</label>
 
-              <MultiSelect
-                options={games.map((g) => ({
-                  label: g.game.name,
-                  value: g.id,
-                  unavailable: g.status != GameStatus.Available,
-                }))}
-                onValueChange={setSelectedGames}
-                defaultValue={selectedGames}
-                placeholder="משחקים"
-                variant="inverted"
-                // animation={2}
-              />
-
+          <MultiSelect
+            options={games.map((g) => ({
+              label: g.game.name,
+              value: g.id,
+              unavailable: g.status != GameStatus.Available,
+            }))}
+            onValueChange={setSelectedGames}
+            defaultValue={selectedGames}
+            placeholder="משחקים"
+            variant="inverted"
+            // animation={2}
+          />
 
           <Button
             onClick={handleSave}
@@ -145,4 +150,4 @@ export default function PendingDialog({ borrowing, handleUpdate, games }: Pendin
       </DialogContent>
     </Dialog>
   );
-};
+}
