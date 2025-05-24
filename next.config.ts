@@ -7,10 +7,9 @@ const nextConfig: NextConfig = {
 };
 module.exports = {
   experimental: {
-    serverActions: true,
+    serverActions: {},
   },
   env: {
-    MONGODB_URI: process.env.MONGODB_URI,
   },
 };
 
